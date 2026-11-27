@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wifi-enhancer"
+version = "0.1.0"
+description = "Web dashboard to scan, analyse and improve your Wi-Fi"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.scripts]
+wifi-enhancer = "wifi_enhancer.server:main"
+
+[tool.setuptools]
+packages = ["wifi_enhancer"]
+
+[tool.setuptools.package-data]
+wifi_enhancer = ["static/*"]

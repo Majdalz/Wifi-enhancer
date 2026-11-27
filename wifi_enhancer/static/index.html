@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wi-Fi Enhancer</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232f7cf6' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M2 8.8a15 15 0 0 1 20 0M5 12.6a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0'/%3E%3Ccircle cx='12' cy='20' r='1.2' fill='%232f7cf6'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.6a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0"/><circle cx="12" cy="20" r="1.2"/></svg>
+      <h1>Wi-Fi Enhancer</h1>
+      <span id="source" class="badge">…</span>
+    </div>
+    <div class="controls">
+      <label class="toggle"><input type="checkbox" id="auto" checked> Auto-refresh</label>
+      <button id="refresh" class="btn primary">Scan now</button>
+      <button id="theme" class="btn icon" title="Toggle theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+    </div>
+  </header>
+
+  <div id="notice" class="notice" hidden></div>
+
+  <main class="grid">
+    <section class="card current">
+      <h2>Current connection</h2>
+      <div class="current-body">
+        <svg class="gauge" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="track" cx="60" cy="60" r="50"/>
+          <circle id="gauge-arc" class="arc" cx="60" cy="60" r="50"/>
+          <text id="gauge-val" x="60" y="60" class="gval">–</text>
+          <text id="gauge-q" x="60" y="80" class="gq"></text>
+        </svg>
+        <dl id="current-info" class="kv"></dl>
+      </div>
+    </section>
+
+    <section class="card tips">
+      <h2>Recommendations</h2>
+      <ul id="tips" class="tip-list"></ul>
+    </section>
+
+    <section class="card chart-card">
+      <div class="card-head">
+        <h2>Channel congestion</h2>
+        <div class="seg" role="tablist">
+          <button class="active" data-band="2.4 GHz">2.4 GHz</button>
+          <button data-band="5 GHz">5 GHz</button>
+        </div>
+      </div>
+      <div id="chart" class="chart"></div>
+      <p class="hint">Lower is better. <span class="sw best"></span> recommended channel · <span class="sw mine"></span> your channel</p>
+    </section>
+
+    <section class="card latency">
+      <h2>Latency test</h2>
+      <div class="lat-row">
+        <select id="target" aria-label="Ping target">
+          <option value="cloudflare">Cloudflare 1.1.1.1</option>
+          <option value="google">Google 8.8.8.8</option>
+          <option value="quad9">Quad9 9.9.9.9</option>
+        </select>
+        <button id="ping" class="btn">Run test</button>
+      </div>
+      <div class="stats">
+        <div><span id="lat-avg">–</span><small>avg ms</small></div>
+        <div><span id="lat-jit">–</span><small>jitter ms</small></div>
+        <div><span id="lat-loss">–</span><small>loss %</small></div>
+      </div>
+      <p id="lat-msg" class="hint"></p>
+    </section>
+
+    <section class="card table-card">
+      <div class="card-head">
+        <h2>Nearby networks <span id="count" class="muted"></span></h2>
+        <div class="filters">
+          <input id="search" type="search" placeholder="Filter SSID…" aria-label="Filter networks">
+          <select id="band-filter" aria-label="Band filter">
+            <option value="">All bands</option>
+            <option>2.4 GHz</option>
+            <option>5 GHz</option>
+            <option>6 GHz</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="ssid">Network</th>
+              <th data-sort="signal" class="sorted desc">Signal</th>
+              <th data-sort="channel">Channel</th>
+              <th data-sort="band">Band</th>
+              <th data-sort="security">Security</th>
+              <th data-sort="bssid" class="hide-sm">BSSID</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">Updated <span id="updated">never</span></footer>
+  <script src="/app.js"></script>
+</body>
+</html>
